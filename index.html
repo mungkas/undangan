@@ -86,7 +86,7 @@ https://templatemo.com/tm-570-chain-app-dev
                             </div>
                             <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
                                 <p style="color: black;">To:</p>
-                                <p style="color: black;">{{nama undangan}}</p>
+                                <p id="nama" style="color: black;">{{nama undangan}}</p>
                                 <br>
                             </div>
                             <div class="border-button text-center">
@@ -112,8 +112,14 @@ https://templatemo.com/tm-570-chain-app-dev
     <script src="assets/js/custom.js"></script>
     <!-- Code injected by live-server -->
     <script>
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+        const namaValue = params.get('nama');
 
-        // <![CDATA[  <-- For SVG support
+        // Update the content of the <p> element with the extracted value
+        const namaElement = document.getElementById('nama');
+        namaElement.textContent = namaValue;
+
 
         if ('WebSocket' in window) {
             (function () {
@@ -150,11 +156,7 @@ https://templatemo.com/tm-570-chain-app-dev
         }
 	// ]]>
     </script>
-    <script>
-        document.getElementById("openButton").addEventListener("click", function () {
-            window.location.href = "page2.html"; // Redirect to page2.html
-        });
-    </script>
+
 </body>
 
 </html>

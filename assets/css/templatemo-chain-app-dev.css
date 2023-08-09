@@ -1425,6 +1425,10 @@ The Clients
 ---------------------------------------------
 */
 
+.swal2-icon {
+  display: none !important;
+}
+
 .pricing-tables {
   padding-top: 130px;
 }

@@ -16,6 +16,8 @@
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
   <!--
 
@@ -36,6 +38,8 @@ https://templatemo.com/tm-570-chain-app-dev
   <link
     href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Great+Vibes&family=Noto+Serif+Vithkuqi:wght@500&family=Radley&display=swap"
     rel="stylesheet">
+
+
 
 </head>
 
@@ -63,8 +67,6 @@ https://templatemo.com/tm-570-chain-app-dev
           <div class="section-heading wow fadeInDown">
             <h4>Selamat anda di undang dalam acara grand opening ceremony <em>Dafam Resort Belitung</em></h4>
             <img src="assets/images/heading-line-dec.png" alt="" height="100px" width="100px">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et
-              dolore magna.</p>
           </div>
         </div>
         <div class="col-lg-6">
@@ -114,21 +116,21 @@ https://templatemo.com/tm-570-chain-app-dev
       <div class="row">
         <div class="col-lg-12">
           <div class="service-item first-service">
-            <form>
+            <form id="form-request">
               <div class="mb-3">
                 <label for="nama" class="form-label">Nama</label>
                 <input type="text" class="form-control" id="nama" name="nama" required>
               </div>
               <div class="mb-3">
                 <label for="no-telepon" class="form-label">No Telepon</label>
-                <input type="tel" class="form-control" id="no-telepon" name="no-telepon" required>
+                <input type="tel" class="form-control" id="no_telepon" name="no_telepon" required>
               </div>
               <div class="mb-3">
                 <label for="kedatangan" class="form-label">Kedatangan</label>
-                <select class="form-select" id="kedatangan" name="kedatangan" required>
+                <select class="form-select" id="kedatangan" name="konfirmasi" required>
                   <option value="" disabled selected>Pilih opsi</option>
                   <option value="datang">Datang</option>
-                  <option value="tidak-datang">Tidak Datang</option>
+                  <option value="tidak datang">Tidak Datang</option>
                 </select>
               </div>
               <div class="mb-3">
@@ -216,21 +218,57 @@ https://templatemo.com/tm-570-chain-app-dev
   <script>
     // <![CDATA[  <-- For SVG support
 
-    document.addEventListener('scroll', function () {
-      var section2Top = document.getElementById('section2').offsetTop;
-      var section3Top = document.getElementById('section3').offsetTop;
+    const numberInput = document.getElementById('no_telepon');
 
-      if (window.pageYOffset >= section2Top) {
-        window.scrollTo(0, section2Top);
-      }
+    numberInput.addEventListener('input', function () {
+      // Remove any non-numeric characters
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
 
-      if (window.pageYOffset >= section3Top) {
-        window.scrollTo(0, section3Top);
+    const thisForm = document.getElementById('form-request');
+
+    thisForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(thisForm);
+
+      try {
+        const response = await fetch('https://komentar-undangan.000webhostapp.com/komentar.php?function=insert', {
+          method: 'POST',
+          body: formData
+        });
+
+        console.log(response)
+
+        if (response.ok) {
+          // Successful submission
+          await Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Your data has been submitted successfully.',
+          });
+
+
+        } else {
+          // Unsuccessful submission
+          await Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'There was an error while submitting your data.',
+          });
+        }
+      } catch (error) {
+        // Network error or other issues
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'An error occurred. Please try again later.',
+        });
       }
     });
 
-    // Call the functions as needed
-    disableScroll();
+
+
     if ('WebSocket' in window) {
       (function () {
         function refreshCSS() {
@@ -268,7 +306,7 @@ https://templatemo.com/tm-570-chain-app-dev
   </script>
 
   <!-- onload -->
-  <!-- <script>
+  <script>
     window.onload = function () {
       // Check if the referrer is not from index.html
       if (document.referrer.indexOf("index.html") === -1) {
@@ -276,7 +314,7 @@ https://templatemo.com/tm-570-chain-app-dev
         window.location.href = "index.html";
       }
     };
-  </script> -->
+  </script>
 </body>
 
 </html>
